@@ -1,0 +1,28 @@
+<?php
+
+namespace Walnut\Lib\TemplateRenderer;
+
+use RuntimeException;
+use Throwable;
+
+final class PhpTemplateRenderer implements TemplateRenderer {
+
+	public function __construct(
+		private /*readonly*/ TemplateNameMapper $templateNameMapper
+	) {}
+
+	public function render(string $templateName, mixed $viewModel = null): string {
+		$filePath = $this->templateNameMapper->fileNameFor($templateName);
+		if (!is_file($filePath)) {
+			throw new RuntimeException("Template $templateName not found ($filePath not found)");
+		}
+		ob_start();
+		try {
+			include $filePath;
+		} catch (Throwable $ex) {
+			ob_end_clean();
+			throw $ex;
+		}
+		return ob_get_clean() ?: '';
+	}
+}
