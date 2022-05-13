@@ -3,6 +3,7 @@
 namespace Walnut\Lib\TemplateRenderer;
 
 interface TemplateRenderer {
+	public function canRenderTemplate(string $templateName): bool;
 	/**
 	 * @param string $templateName
 	 * @param mixed $viewModel

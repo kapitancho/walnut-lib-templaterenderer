@@ -8,8 +8,12 @@ use Throwable;
 final class PhpTemplateRenderer implements TemplateRenderer {
 
 	public function __construct(
-		private /*readonly*/ TemplateNameMapper $templateNameMapper
+		private readonly TemplateNameMapper $templateNameMapper
 	) {}
+
+	public function canRenderTemplate(string $templateName): bool {
+		return is_file($this->templateNameMapper->fileNameFor($templateName));
+	}
 
 	public function render(string $templateName, mixed $viewModel = null): string {
 		$filePath = $this->templateNameMapper->fileNameFor($templateName);

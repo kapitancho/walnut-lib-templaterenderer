@@ -18,6 +18,7 @@ final class PhpTemplateRendererTest extends TestCase {
 	public function testOk(): void {
 		$renderer = $this->getRenderer();
 		$this->assertStringContainsString('5', $renderer->render('test', 5));
+		$this->assertTrue($renderer->canRenderTemplate('test'));
 	}
 
 	public function testTemplateNotFound(): void {
